@@ -32,7 +32,7 @@ namespace CarRentalManagement.Server.Controllers
         {
             //Refractored
             //return await _context.Makes.ToListAsync();
-            var veh = await _unitOfWork.Vehicles.GetAll();
+            var veh = await _unitOfWork.Vehicles.GetAll(includes: q=>q.Include(x=>x.Make).Include(x=>x.Model).Include(x=>x.Colour));
             return Ok(veh);
         }
 

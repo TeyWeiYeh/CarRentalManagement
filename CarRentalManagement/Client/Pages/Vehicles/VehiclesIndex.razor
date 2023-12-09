@@ -1,0 +1,70 @@
+﻿@page "/vehicles/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Car Vehicles</h3>
+
+@if (Vehicles == null)
+{
+    <div class="alert alert-info">Loading Vehicles...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thread>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>License Plate Number</th>
+                <th>Actions</th>
+            </tr>
+            <tbody>
+                @foreach (var veh in Vehicles)
+                {
+                    <tr>
+                        <td>@veh.Make</td>
+                        <td>@veh.Model</td>
+                        <td>@veh.Year</td>
+                        <td>@veh.LicensePlateNumber</td>
+                        <td>
+                            <a href="/makes/view/@veh.Id" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                            </a>
+                            <a href="/makes/edit/@veh.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="() => Delete(veh.Id)">
+                                <span class="oi oi-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </thread>
+    </table>
+}
+
+@code {
+    private List<Vehicle>? Vehicles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+    }
+
+    async Task Delete(int id)
+    {
+        if (Vehicles != null)
+        {
+            var veh = Vehicles.First(m => m.Id == id);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete vehicle {veh.Make} ?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}/{id}");
+                await OnInitializedAsync();
+            }
+        }
+    }
+}
