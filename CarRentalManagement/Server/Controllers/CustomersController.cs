@@ -28,7 +28,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Makes
         [HttpGet]
-        public async Task<ActionResult> GetMakes()
+        public async Task<ActionResult> GetCustomers()
         {
             //Refractored
             //return await _context.Makes.ToListAsync();
@@ -38,7 +38,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Makes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetMake(int id)
+        public async Task<ActionResult> GetCustomer(int id)
         {
             var cust = await _unitOfWork.Customers.Get(q => q.Id == id);
             if (cust == null)
@@ -53,7 +53,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Makes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Customer cust)
+        public async Task<IActionResult> PutCustomer(int id, Customer cust)
         {
             if (id != cust.Id)
             {
@@ -74,7 +74,7 @@ namespace CarRentalManagement.Server.Controllers
             {
                 //Refractored
                 //if (!MakeExists(id))
-                if (!await MakeExists(id))
+                if (!await CustExists(id))
                 {
                     return NotFound();
                 }
@@ -90,7 +90,7 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Makes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Customer cust)
+        public async Task<ActionResult<Customer>> PostCust(Customer cust)
         {
             //Refractored
             //_context.Makes.Add(make);
@@ -103,7 +103,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // DELETE: api/Makes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
             //Refractored
             //var make = await _context.Makes.FindAsync(id);
@@ -125,7 +125,7 @@ namespace CarRentalManagement.Server.Controllers
 
         //Refractored
         //private bool MakeExists(int id)
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> CustExists(int id)
         {
             //Refractored   
             //return _context.Makes.Any(e => e.Id == id);

@@ -1,9 +1,17 @@
 ﻿@page "/makes/"
-@inject HttpClient _client
-@inject IJSRuntime js
-@attribute [Authorize]
+@inject HttpClient _client 
+@inject IJSRuntime js 
+@attribute [Authorize] 
 
-<h3 class="card-title">Car makes</h3>
+<h3 class="card-title">Car Makes</h3>
+
+<a href="/makes/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Make
+</a>
+<br />
+<br />
+
 
 @if (Makes == null)
 {

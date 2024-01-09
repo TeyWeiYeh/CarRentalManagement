@@ -28,7 +28,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Makes
         [HttpGet]
-        public async Task<ActionResult> GetMakes()
+        public async Task<ActionResult> GetBookings()
         {
             //Refractored
             //return await _context.Makes.ToListAsync();
@@ -38,9 +38,9 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Makes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetMake(int id)
+        public async Task<ActionResult> GetBooking(int id)
         {
-            var bookings = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var bookings = await _unitOfWork.Bookings.Get(q => q.Id == id);
             if (bookings == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Makes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Make bookings)
+        public async Task<IActionResult> PutBooking(int id, Booking bookings)
         {
             if (id != bookings.Id)
             {
@@ -62,7 +62,7 @@ namespace CarRentalManagement.Server.Controllers
 
             //Refractored
             //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Makes.Update(bookings);
+            _unitOfWork.Bookings.Update(bookings);
 
             try
             {
@@ -74,7 +74,7 @@ namespace CarRentalManagement.Server.Controllers
             {
                 //Refractored
                 //if (!MakeExists(id))
-                if (!await MakeExists(id))
+                if (!await BookingExists(id))
                 {
                     return NotFound();
                 }
@@ -90,12 +90,12 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Makes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Make bookings)
+        public async Task<ActionResult<Booking>> PostBooking(Booking bookings)
         {
             //Refractored
             //_context.Makes.Add(make);
             //await _context.SaveChangesAsync();
-            await _unitOfWork.Makes.Insert(bookings);
+            await _unitOfWork.Bookings.Insert(bookings);
             await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetBooking", new { id = bookings.Id }, bookings);
@@ -103,11 +103,11 @@ namespace CarRentalManagement.Server.Controllers
 
         // DELETE: api/Makes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteBooking(int id)
         {
             //Refractored
             //var make = await _context.Makes.FindAsync(id);
-            var bookings = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var bookings = await _unitOfWork.Bookings.Get(q => q.Id == id);
             if (bookings == null)
             {
                 return NotFound();
@@ -117,7 +117,7 @@ namespace CarRentalManagement.Server.Controllers
             //_context.Makes.Remove(make);
             //await _context.SaveChangesAsync();
 
-            await _unitOfWork.Makes.Delete(id);
+            await _unitOfWork.Bookings.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
@@ -125,11 +125,11 @@ namespace CarRentalManagement.Server.Controllers
 
         //Refractored
         //private bool MakeExists(int id)
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> BookingExists(int id)
         {
             //Refractored   
             //return _context.Makes.Any(e => e.Id == id);
-            var bookings = await _unitOfWork.Makes.Get(q => q.Id == id);
+            var bookings = await _unitOfWork.Bookings.Get(q => q.Id == id);
             return bookings != null;
         }
     }

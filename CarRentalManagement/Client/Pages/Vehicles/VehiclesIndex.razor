@@ -5,6 +5,13 @@
 
 <h3 class="card-title">Car Vehicles</h3>
 
+<a href="/vehicles/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Vehicle
+</a>
+<br />
+<br />
+
 @if (Vehicles == null)
 {
     <div class="alert alert-info">Loading Vehicles...</div>
@@ -24,15 +31,15 @@ else
                 @foreach (var veh in Vehicles)
                 {
                     <tr>
-                        <td>@veh.Make</td>
-                        <td>@veh.Model</td>
+                        <td>@veh.Make?.Name</td>
+                        <td>@veh.Model?.Name</td>
                         <td>@veh.Year</td>
                         <td>@veh.LicensePlateNumber</td>
                         <td>
-                            <a href="/makes/view/@veh.Id" class="btn btn-primary">
+                            <a href="/vehicles/view/@veh.Id" class="btn btn-primary">
                                 <span class="oi oi-book"></span>
                             </a>
-                            <a href="/makes/edit/@veh.Id" class="btn btn-warning">
+                            <a href="/vehicles/edit/@veh.Id" class="btn btn-warning">
                                 <span class="oi oi-pencil"></span>
                             </a>
                             <button class="btn btn-danger" @onclick="() => Delete(veh.Id)">
@@ -59,7 +66,7 @@ else
         if (Vehicles != null)
         {
             var veh = Vehicles.First(m => m.Id == id);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete vehicle {veh.Make} ?");
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete vehicle {veh.LicensePlateNumber} ?");
             if (confirm)
             {
                 await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}/{id}");

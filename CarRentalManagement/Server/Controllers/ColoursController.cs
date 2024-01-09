@@ -29,7 +29,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Colours
         [HttpGet]
-        public async Task<IActionResult> GetMakes()
+        public async Task<IActionResult> GetColours()
         {
             var colours = await _unitOfWork.Colours.GetAll();
             return Ok(colours);
@@ -37,7 +37,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // GET: api/Colours/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMake(int id)
+        public async Task<IActionResult> GetColour(int id)
         {
             var colours = await _unitOfWork.Colours.Get(q => q.Id == id);
 
@@ -52,7 +52,7 @@ namespace CarRentalManagement.Server.Controllers
         // PUT: api/Colours/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMake(int id, Colour colours)
+        public async Task<IActionResult> PutColour(int id, Colour colours)
         {
             if (id != colours.Id)
             {
@@ -67,7 +67,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await MakeExists(id))
+                if (!await ColourExists(id))
                 {
                     return NotFound();
                 }
@@ -83,7 +83,7 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Colours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Make>> PostMake(Colour colours)
+        public async Task<ActionResult<Colour>> PostColour(Colour colours)
         {
             await _unitOfWork.Colours.Insert(colours);
             await _unitOfWork.Save(HttpContext);
@@ -93,7 +93,7 @@ namespace CarRentalManagement.Server.Controllers
 
         // DELETE: api/Colours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMake(int id)
+        public async Task<IActionResult> DeleteColour(int id)
         {
             var colours = await _unitOfWork.Colours.Get(q => q.Id == id);
             if (colours == null)
@@ -107,7 +107,7 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        private async Task<bool> MakeExists(int id)
+        private async Task<bool> ColourExists(int id)
         {
             //Refractored
             //return _context.Makes.Any(e => e.Id == id);

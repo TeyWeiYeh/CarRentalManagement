@@ -2,10 +2,19 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3 class="card-title">Car Colours</h3>
 
-@if (Colours == null)
+<a href="/colours/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Colour
+</a>
+<br />
+<br />
+
+@if (Colour == null)
 {
     <div class="alert alert-info">Loading Colours...</div>
 }
@@ -18,15 +27,15 @@ else
                 <th>Actions</th>
             </tr>
             <tbody>
-                @foreach (var colour in Colours)
+                @foreach (var colour in Colour)
                 {
                     <tr>
                         <td>@colour.Name</td>
                         <td>
-                            <a href="/makes/view/@colour.Id" class="btn btn-primary">
+                            <a href="/colours/view/@colour.Id" class="btn btn-primary">
                                 <span class="oi oi-book"></span>
                             </a>
-                            <a href="/makes/edit/@colour.Id" class="btn btn-warning">
+                            <a href="/colours/edit/@colour.Id" class="btn btn-warning">
                                 <span class="oi oi-pencil"></span>
                             </a>
                             <button class="btn btn-danger" @onclick="() => Delete(colour.Id)">
@@ -41,18 +50,19 @@ else
 }
 
 @code {
-    private List<Colour>? Colours;
+    private List<Colour>? Colour;
 
     protected async override Task OnInitializedAsync()
     {
-        Colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
+        _interceptor.MonitorEvent();
+        Colour = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
     }
 
     async Task Delete(int id)
     {
-        if (Colours != null)
+        if (Colour != null)
         {
-            var colour = Colours.First(m => m.Id == id);
+            var colour = Colour.First(m => m.Id == id);
             var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {colour.Name}?");
             if (confirm)
             {
@@ -60,5 +70,10 @@ else
                 await OnInitializedAsync();
             }
         }
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
     }
 }
