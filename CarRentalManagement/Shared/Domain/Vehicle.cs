@@ -13,7 +13,7 @@ namespace CarRentalManagement.Shared.Domain
         public int Year { get; set; }
 
         [Required]
-        [RegularExpression(@"^[Ss]{1}[A-Za-z]{2}\d{4}[A-Za-z]{3}$", ErrorMessage = "License Plate Number does not meet requirements")]
+        [RegularExpression(@"^[Ss]{1}[A-Za-z]{2}\d{4}[A-Za-z]{1}$", ErrorMessage = "License Plate Number does not meet requirements")]
         public string? LicensePlateNumber { get; set; }
 
         [Required]
